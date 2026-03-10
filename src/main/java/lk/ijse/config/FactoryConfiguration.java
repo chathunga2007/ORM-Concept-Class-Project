@@ -5,30 +5,29 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
-//HibernateUtil
+// HibernateUtill
+//    global accessible single instance - singleton
 public class FactoryConfiguration {
     private static FactoryConfiguration factoryConfiguration;
-    private SessionFactory sessionFactory;
+    private SessionFactory sessionFactory; // session
 
-    private FactoryConfiguration(){
+    private FactoryConfiguration() {
+        // Hibernate Bootstrapping & Schema Strategies
         Configuration configuration = new Configuration();
-        configuration.configure("hibernate.cfg.xml");
-        System.out.println(configuration.getProperties());
+        configuration.configure("hibernet.cfg.xml");
 
         configuration.addAnnotatedClass(Customer.class);
 
         sessionFactory = configuration.buildSessionFactory();
     }
 
-    public static FactoryConfiguration getInstance(){
-        return factoryConfiguration == null ? new FactoryConfiguration() : factoryConfiguration;
+    public static FactoryConfiguration getInstance() {
+        return factoryConfiguration == null ?
+                factoryConfiguration = new FactoryConfiguration() :
+                factoryConfiguration;
     }
 
-    public Session getSession(){
+    public Session getSession() {
         return sessionFactory.openSession();
-    }
-
-    public SessionFactory getSessionFactory() {
-        return sessionFactory;
     }
 }
